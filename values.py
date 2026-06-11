@@ -8,7 +8,7 @@ This includes primitives, collections, functions, classes, and instances.
 from typing import List, Dict, Callable, Optional, Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .interpreter import Interpreter
+    from interpreter import Interpreter
 
 
 class HValue:

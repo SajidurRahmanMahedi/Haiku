@@ -42,12 +42,12 @@ println("Version: " + version)
 
 Run it:
 ```bash
-python -m python_haiku hello.hku
+python main.py hello.hku
 ```
 
 Or use the interactive REPL:
 ```bash
-python -m python_haiku
+python main.py
 haiku> println(2 + 2)
 4
 ```
@@ -568,22 +568,22 @@ try {
 
 ### Run a File
 ```bash
-python -m python_haiku script.hku
+python main.py script.hku
 ```
 
 ### Interactive REPL
 ```bash
-python -m python_haiku
+python main.py
 ```
 
 ### Run Inline Code
 ```bash
-python -m python_haiku -c "println(42)"
+python main.py -c "println(42)"
 ```
 
 ### From Python
 ```python
-from python_haiku import run
+from Haiku import run
 
 result = run('''
 let x = 10

@@ -13,10 +13,10 @@ Or use the CLI:
     python -m python_haiku          # Interactive REPL
 """
 
-from .lexer import Lexer, LexerError
-from .parser import Parser, ParseError
-from .interpreter import Interpreter, RuntimeError
-from .stdlib import create_global_env
+from lexer import Lexer, LexerError
+from parser import Parser, ParseError
+from interpreter import Interpreter, RuntimeError
+from stdlib import create_global_env
 
 
 def run(source: str, input_provider=None):
