@@ -1,0 +1,50 @@
+// Advanced Haiku features
+
+// Higher-order functions
+fn applyTwice(func, x) {
+    return func(func(x))
+}
+
+let addTen = (x) => x + 10
+println("applyTwice(addTen, 5) = " + applyTwice(addTen, 5))
+
+// Closure
+fn makeCounter() {
+    let count = 0
+    return () => {
+        count = count + 1
+        return count
+    }
+}
+
+let counter = makeCounter()
+println("Counter: " + counter())
+println("Counter: " + counter())
+println("Counter: " + counter())
+
+// Error handling
+try {
+    let x = 10
+    let y = 0
+    if y == 0 {
+        throw("Cannot divide by zero!")
+    }
+    println("Result: " + (x / y))
+} catch e {
+    println("Caught error: " + e)
+} finally {
+    println("Cleanup complete")
+}
+
+// Range operator
+let r = 1..5
+println("Range 1..5: " + r)
+
+// List comprehension-like with map/filter
+let nums = range(1, 11)
+let squares = nums.map((x) => x * x).filter((x) => x > 10)
+println("Squares > 10: " + squares)
+
+// Assertions
+assert(2 + 2 == 4, "Math still works")
+println("All assertions passed!")

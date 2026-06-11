@@ -1,0 +1,44 @@
+// Control flow in Haiku
+
+// If-elif-else
+let score = 85
+
+if score >= 90 {
+    println("Grade: A")
+} elif score >= 80 {
+    println("Grade: B")
+} elif score >= 70 {
+    println("Grade: C")
+} else {
+    println("Grade: F")
+}
+
+// For loops
+println("Counting to 5:")
+for i in range(1, 6) {
+    println("  " + i)
+}
+
+// While loops
+let n = 5
+let fact = 1
+while n > 1 {
+    fact = fact * n
+    n = n - 1
+}
+println("5! = " + fact)
+
+// Match statement
+let day = "monday"
+match day {
+    "monday" => println("Start of week")
+    "friday" => println("End of week")
+    "saturday" => println("Weekend!")
+    "sunday" => println("Weekend!")
+    default => println("Midweek")
+}
+
+// Ternary
+let age = 20
+let status = age >= 18 ? "adult" : "minor"
+println("Status: " + status)

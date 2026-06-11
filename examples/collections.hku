@@ -1,0 +1,35 @@
+// Lists and Maps in Haiku
+
+let fruits = ["apple", "banana", "cherry"]
+let numbers = [1, 2, 3, 4, 5]
+
+println("Fruits: " + fruits)
+println("Length: " + fruits.len())
+
+fruits.push("date")
+println("After push: " + fruits)
+
+let first = fruits.get(0)
+println("First fruit: " + first)
+
+// List methods
+let doubled = numbers.map((x) => x * 2)
+println("Doubled: " + doubled)
+
+let evens = numbers.filter((x) => x % 2 == 0)
+println("Evens: " + evens)
+
+let sum = numbers.reduce((acc, x) => acc + x, 0)
+println("Sum: " + sum)
+
+// Maps
+let scores = {
+    "alice": 95,
+    "bob": 87,
+    "charlie": 92
+}
+
+println("Scores: " + scores)
+println("Alice's score: " + scores["alice"])
+println("Keys: " + scores.keys())
+println("Values: " + scores.values())

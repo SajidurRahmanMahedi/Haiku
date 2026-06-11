@@ -1,0 +1,11 @@
+// Welcome to Haiku!
+// A modern, expressive programming language
+
+println("Hello, World!")
+println("Welcome to Haiku programming language")
+
+let name = "Haiku"
+let version = 1.0
+
+println("Language: " + name)
+println("Version: " + version)

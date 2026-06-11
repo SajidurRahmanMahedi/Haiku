@@ -1,0 +1,39 @@
+// Object-Oriented Programming in Haiku
+
+class Animal {
+    fn init(name) {
+        this.name = name
+    }
+
+    fn speak() {
+        return this.name + " makes a sound"
+    }
+
+    fn info() {
+        return "Animal: " + this.name
+    }
+}
+
+class Dog(Animal) {
+    fn init(name, breed) {
+        super.init(name)
+        this.breed = breed
+    }
+
+    fn speak() {
+        return this.name + " barks!"
+    }
+
+    fn info() {
+        return super.info() + " (" + this.breed + ")"
+    }
+}
+
+let animal = Animal("Creature")
+println(animal.speak())
+println(animal.info())
+
+let dog = Dog("Buddy", "Golden Retriever")
+println(dog.speak())
+println(dog.info())
+println("Breed: " + dog.breed)

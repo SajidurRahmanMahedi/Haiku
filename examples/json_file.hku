@@ -1,0 +1,35 @@
+// JSON and File operations in Haiku
+
+let data = {
+    "name": "Haiku",
+    "version": 1.0,
+    "features": ["fast", "simple", "powerful"],
+    "active": true
+}
+
+println("Data map: " + data)
+
+// Convert to JSON string
+let jsonStr = JSON.stringify(data)
+println("JSON string:")
+println(jsonStr)
+
+// Parse JSON back
+let parsed = JSON.parse(jsonStr)
+println("Parsed name: " + parsed["name"])
+println("Parsed features: " + parsed["features"])
+
+// File operations (simulated)
+File.write("hello.txt", "Hello from Haiku!")
+println("File written")
+
+let content = File.read("hello.txt")
+println("File content: " + content)
+
+println("File exists: " + File.exists("hello.txt"))
+
+File.append("hello.txt", "\nAppended line.")
+println("After append: " + File.read("hello.txt"))
+
+File.delete("hello.txt")
+println("File exists after delete: " + File.exists("hello.txt"))

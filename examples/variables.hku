@@ -1,0 +1,21 @@
+// Variables and data types in Haiku
+
+let message = "Hello"
+let count = 42
+let price = 19.99
+let active = true
+let empty = none
+
+println("String: " + message)
+println("Integer: " + count)
+println("Float: " + price)
+println("Boolean: " + active)
+println("None: " + empty)
+
+// Type checking
+println("Type of count: " + type(count))
+println("Type of message: " + type(message))
+
+// Constants
+const PI = 3.14159
+println("PI = " + PI)
