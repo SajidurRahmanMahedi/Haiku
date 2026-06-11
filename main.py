@@ -18,6 +18,7 @@ from parser import Parser, ParseError
 from interpreter import Interpreter, RuntimeError
 from stdlib import create_global_env
 
+ver = float(1.0)
 
 def run_file(path: str):
     """Execute a Haiku source file."""
@@ -39,7 +40,7 @@ def run_file(path: str):
 def run_repl():
     """Start an interactive Read-Eval-Print Loop."""
     print("=" * 50)
-    print("  Haiku Programming Language v1.0")
+    print(f"  Haiku Programming Language v{ver}")
     print("  Type 'exit' or press Ctrl+D to quit")
     print("=" * 50)
 
@@ -141,7 +142,7 @@ def main():
         return
 
     if args[0] in ("-v", "--version"):
-        print("Haiku Programming Language v1.0")
+        print(f"Haiku {ver}")
         return
 
     if args[0] in ("-c", "--code"):
