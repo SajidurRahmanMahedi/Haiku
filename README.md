@@ -697,6 +697,14 @@ println("Average age: " + (totalAge / users.len()))
 
 ---
 
+## Packaging
+
+### 1. Compile to Executable (`PyInstaller`)
+To bundle the application into exe:
+```powershell
+pyinstaller --onefile --paths . --icon icon.ico main.py -n haiku
+```
+
 ## License
 
 Haiku is open source. Use it, modify it, and build amazing things with it!
