@@ -1,5 +1,5 @@
 """
-Entry point for `python -m python_haiku`.
+Entry point for `Haiku`.
 """
 from main import main
 

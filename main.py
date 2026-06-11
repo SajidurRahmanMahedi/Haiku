@@ -116,7 +116,7 @@ Haiku Programming Language - CLI Help
 =====================================
 
 Usage:
-    python -m python_haiku [options] [file]
+    python main.py [options] [file]
 
 Options:
     -c, --code <code>    Run Haiku code from string
@@ -124,9 +124,9 @@ Options:
     -v, --version        Show version info
 
 Examples:
-    python -m python_haiku                    # Start REPL
-    python -m python_haiku script.hku         # Run file
-    python -m python_haiku -c "println(42)"   # Run inline code
+    python main.py                    # Start REPL
+    python main.py script.hku         # Run file
+    python main.py -c "println(42)"   # Run inline code
 """)
 
 

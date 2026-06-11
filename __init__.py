@@ -4,13 +4,13 @@ Haiku Programming Language
 A modern, expressive programming language inspired by Python.
 
 Quick Start:
-    from python_haiku import run
+    from Haiku import run
     result = run('println("Hello, World!")')
     print(result.output)
 
 Or use the CLI:
-    python -m python_haiku script.hku
-    python -m python_haiku          # Interactive REPL
+    python main.py script.hku
+    python main.py          # Interactive REPL
 """
 
 from lexer import Lexer, LexerError

@@ -601,7 +601,7 @@ if result.error:
 ## Project Structure
 
 ```
-python_haiku/
+Haiku/
 ├── __init__.py       # Package entry point, run() helper
 ├── main.py           # CLI with REPL and file execution
 ├── lexer.py          # Tokenizer
