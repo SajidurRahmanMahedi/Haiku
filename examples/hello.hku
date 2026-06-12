@@ -7,5 +7,6 @@ println("Welcome to Haiku programming language")
 let name = "Haiku"
 let version = 1.0
 
-println("Language: " + name)
-println("Version: " + version)
+// Using f-strings for easier string interpolation
+println(f"Language: {name}")
+println(f"Version: {version}")

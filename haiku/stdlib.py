@@ -9,7 +9,7 @@ import math
 import random
 import json as pyjson
 from typing import Dict, List
-from values import (
+from .values import (
     Environment, HNativeFn, HNumber, HString, HBoolean, HNone,
     HList, HMap, HModule, HValue, h_number, h_string, h_bool, h_none, h_list, h_map
 )

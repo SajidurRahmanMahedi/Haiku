@@ -13,10 +13,10 @@ Or use the CLI:
     python main.py          # Interactive REPL
 """
 
-from lexer import Lexer, LexerError
-from parser import Parser, ParseError
-from interpreter import Interpreter, RuntimeError
-from stdlib import create_global_env
+from .lexer import Lexer, LexerError
+from .parser import Parser, ParseError
+from .interpreter import Interpreter, HaikuRuntimeError, RuntimeError
+from .stdlib import create_global_env
 
 
 def run(source: str, input_provider=None):
@@ -48,16 +48,18 @@ def run(source: str, input_provider=None):
             error=None,
             result=None
         )
+    except LexerError as e:
+        return SimpleNamespace(output="", error=f"LexerError: {e}", result=None)
+    except ParseError as e:
+        return SimpleNamespace(output="", error=f"ParseError: {e}", result=None)
+    except HaikuRuntimeError as e:
+        return SimpleNamespace(output="", error=e.format(), result=None)
     except Exception as e:
-        return SimpleNamespace(
-            output="",
-            error=str(e),
-            result=None
-        )
+        return SimpleNamespace(output="", error=f"Error: {e}", result=None)
 
 
 __all__ = [
     "Lexer", "Parser", "Interpreter",
-    "LexerError", "ParseError", "RuntimeError",
+    "LexerError", "ParseError", "RuntimeError", "HaikuRuntimeError",
     "run", "create_global_env"
 ]

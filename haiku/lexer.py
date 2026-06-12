@@ -15,6 +15,8 @@ class TokenType(Enum):
     # Literals
     NUMBER = auto()
     STRING = auto()
+    FSTRING = auto()
+    RSTRING = auto()
     IDENTIFIER = auto()
 
     # Keywords
@@ -269,7 +271,15 @@ class Lexer:
         elif self._is_digit(ch):
             self._number(ch)
         elif self._is_alpha(ch):
-            self._identifier(ch)
+            # Check for string prefix (f or r followed by quote)
+            if ch in ('f', 'r') and self._peek() in ('"', "'"):
+                quote = self._advance()
+                if ch == 'f':
+                    self._fstring(quote)
+                else:
+                    self._rstring(quote)
+            else:
+                self._identifier(ch)
         else:
             raise LexerError(f"Unexpected character '{ch}' at line {self.line}, column {self.column}")
 
@@ -278,11 +288,16 @@ class Lexer:
     # ------------------------------------------------------------------
 
     def _block_comment(self):
+        start_line = self.line
         while not (self._peek() == "*" and self._peek_next() == "/") and not self._at_end():
             self._advance()
-        if not self._at_end():
-            self._advance()  # *
-            self._advance()  # /
+        if self._at_end():
+            raise LexerError(
+                f"Unterminated block comment starting at line {start_line}"
+            )
+        self._advance()  # *
+        self._advance()  # /
+
 
     def _string(self, quote: str):
         value = ""
@@ -298,6 +313,50 @@ class Lexer:
             raise LexerError(f"Unterminated string at line {self.line}")
         self._advance()  # closing quote
         self._add_token(TokenType.STRING, value)
+
+    def _rstring(self, quote: str):
+        """Raw string - no escape sequences."""
+        value = ""
+        while self._peek() != quote and not self._at_end():
+            value += self._advance()
+        if self._at_end():
+            raise LexerError(f"Unterminated raw string at line {self.line}")
+        self._advance()  # closing quote
+        self._add_token(TokenType.RSTRING, value)
+
+    def _fstring(self, quote: str):
+        """F-string with interpolation."""
+        value = ""
+        while self._peek() != quote and not self._at_end():
+            if self._peek() == "\\":
+                self._advance()
+                esc = self._advance()
+                value += {"n": "\n", "t": "\t", "r": "\r", "\\": "\\",
+                          '"': '"', "'": "'", "0": "\0"}.get(esc, esc)
+            elif self._peek() == "{" and self._peek_next() == "{":
+                # Escaped brace {{
+                self._advance()
+                self._advance()
+                value += "{"
+            elif self._peek() == "}" and self._peek_next() == "}":
+                # Escaped brace }}
+                self._advance()
+                self._advance()
+                value += "}"
+            elif self._peek() == "{":
+                # Start of interpolation
+                self._advance()
+                value += "{"  # Mark interpolation start
+            elif self._peek() == "}":
+                # End of interpolation
+                self._advance()
+                value += "}"  # Mark interpolation end
+            else:
+                value += self._advance()
+        if self._at_end():
+            raise LexerError(f"Unterminated f-string at line {self.line}")
+        self._advance()  # closing quote
+        self._add_token(TokenType.FSTRING, value)
 
     def _number(self, first: str):
         value = first

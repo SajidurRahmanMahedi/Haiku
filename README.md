@@ -1,6 +1,15 @@
 # Haiku Programming Language
 
-**Haiku** is a modern, expressive, general-purpose programming language inspired by Python. It is designed to be simple to learn yet powerful enough for real-world tasks. Haiku features a clean syntax, first-class functions, object-oriented programming, pattern matching, and a rich standard library.
+**Haiku** is a modern, expressive programming language designed to be **simpler than Python** while remaining powerful enough for real-world tasks. Haiku features clean syntax, f-strings for easy string interpolation, module imports, first-class functions, object-oriented programming, pattern matching, and a rich standard library.
+
+## What's New in Haiku 2.0
+
+- **F-strings**: Easy string interpolation with `f"Hello {name}"`
+- **R-strings**: Raw strings for regex and paths with `r"C:\\path\\to\\file"`
+- **Module imports**: Import custom `.hku` files and built-in modules
+- **Simpler syntax**: Cleaner, more intuitive than Python
+- **Error tracebacks**: Full call-stack traceback with exact line numbers on every runtime error
+- **Unclosed comment detection**: `/* ... */` comments that are never closed now raise a clear `LexerError` instead of silently skipping code
 
 - **File Extension**: `.hku`
 - **Base Language**: Python (interpreter written in Python)
@@ -12,32 +21,35 @@
 
 1. [Quick Start](#quick-start)
 2. [Language Syntax](#language-syntax)
-3. [Data Types](#data-types)
-4. [Variables & Constants](#variables--constants)
-5. [Operators](#operators)
-6. [Control Flow](#control-flow)
-7. [Functions](#functions)
-8. [Object-Oriented Programming](#object-oriented-programming)
-9. [Collections](#collections)
-10. [Standard Library](#standard-library)
-11. [Error Handling](#error-handling)
-12. [Running Haiku](#running-haiku)
-13. [Project Structure](#project-structure)
-14. [Complete Example Programs](#complete-example-programs)
+3. [F-Strings & R-Strings](#f-strings--r-strings)
+4. [Imports](#imports)
+5. [Data Types](#data-types)
+6. [Variables & Constants](#variables--constants)
+7. [Operators](#operators)
+8. [Control Flow](#control-flow)
+9. [Functions](#functions)
+10. [Object-Oriented Programming](#object-oriented-programming)
+11. [Collections](#collections)
+12. [Standard Library](#standard-library)
+13. [Error Handling](#error-handling)
+14. [Running Haiku](#running-haiku)
+15. [Project Structure](#project-structure)
+16. [Complete Example Programs](#complete-example-programs)
 
 ---
 
 ## Quick Start
 
 ```haiku
-// Hello World in Haiku
+// Hello World in Haiku with f-strings
 println("Hello, World!")
 
 let name = "Haiku"
 let version = 1.0
 
-println("Language: " + name)
-println("Version: " + version)
+// Use f-strings for cleaner string interpolation
+println(f"Language: {name}")
+println(f"Version: {version}")
 ```
 
 Run it:
@@ -78,6 +90,104 @@ class, this, super, import, from, as, true, false, none
 and, or, not, try, catch, finally, throw, match, case
 default, break, continue, in, async, await, yield
 static, private, public
+```
+
+---
+
+## F-Strings & R-Strings
+
+### F-Strings (Formatted Strings)
+F-strings provide an easy way to embed expressions inside string literals using curly braces.
+
+```haiku
+let name = "Alice"
+let age = 30
+
+// Simple interpolation
+println(f"Hello, {name}!")
+println(f"You are {age} years old")
+
+// Expressions inside f-strings
+println(f"Next year you'll be {age + 1}")
+
+// Method calls
+let text = "hello world"
+println(f"Uppercase: {text.upper()}")
+
+// Escaped braces
+println(f"Literal braces: {{ and }}")
+```
+
+### R-Strings (Raw Strings)
+R-strings treat backslashes as literal characters, perfect for regex patterns and file paths.
+
+```haiku
+// Regex pattern (no need to double-escape)
+let pattern = r"\d+\w+"
+
+// File paths (Windows-style)
+let path = r"C:\Users\Documents\file.txt"
+
+// Raw text with backslashes
+let raw = r"Line 1\nLine 2\nLine 3"
+println(raw)  // Prints: Line 1\nLine 2\nLine 3
+```
+
+---
+
+## Imports
+
+Haiku supports importing from custom `.hku` files and built-in modules.
+
+### Import Built-in Modules
+```haiku
+// Import entire module
+import Math
+println(f"PI = {Math.PI}")
+println(f"sqrt(16) = {Math.sqrt(16)}")
+
+// Import Time module
+import Time
+let now = Time.now()
+println(f"Timestamp: {now}")
+```
+
+### Import Custom .hku Files
+```haiku
+// Import from a custom file
+import { greet, farewell } from 'my_module.hku'
+
+greet("Alice")
+farewell("Bob")
+
+// Import entire module with alias
+import 'utils.hku' as Utils
+Utils.helperFunction()
+
+// Import all exports
+import * from 'helpers.hku'
+```
+
+### Creating Importable Modules
+Create a file `my_module.hku`:
+```haiku
+// my_module.hku
+let version = "1.0"
+
+fn greet(name) {
+    return f"Hello, {name}!"
+}
+
+fn farewell(name) {
+    return f"Goodbye, {name}!"
+}
+```
+
+Then import it in another file:
+```haiku
+import { greet, farewell, version } from 'my_module.hku'
+println(greet("World"))
+println(f"Module version: {version}")
 ```
 
 ---
@@ -242,7 +352,7 @@ while n > 1 {
     fact = fact * n
     n = n - 1
 }
-println("5! = " + fact)
+println(f"5! = {fact}")
 ```
 
 ### Match (Pattern Matching)
@@ -277,7 +387,7 @@ for i in range(1, 10) {
 ### Function Declaration
 ```haiku
 fn greet(name) {
-    return "Hello, " + name + "!"
+    return f"Hello, {name}!"
 }
 
 println(greet("Haiku"))
@@ -286,7 +396,7 @@ println(greet("Haiku"))
 ### Default Parameters
 ```haiku
 fn greetWithTitle(name, title = "Mr./Ms.") {
-    return "Hello, " + title + " " + name
+    return f"Hello, {title} {name}"
 }
 
 println(greetWithTitle("Smith"))        // Hello, Mr./Ms. Smith
@@ -359,7 +469,7 @@ class Animal {
     }
 
     fn speak() {
-        return this.name + " makes a sound"
+        return f"{this.name} makes a sound"
     }
 }
 
@@ -376,18 +486,18 @@ class Dog(Animal) {
     }
 
     fn speak() {
-        return this.name + " barks!"
+        return f"{this.name} barks!"
     }
 
     fn info() {
-        return super.info() + " (" + this.breed + ")"
+        return f"{super.info()} ({this.breed})"
     }
 }
 
 let dog = Dog("Buddy", "Golden Retriever")
 println(dog.speak())
 println(dog.info())
-println(dog.breed)
+println(f"Breed: {dog.breed}")
 ```
 
 ### Static Methods
@@ -426,7 +536,7 @@ let reversed = nums.reverse()
 let joined = nums.join(", ")
 let sliced = nums.slice(1, 3)
 
-println("Length: " + nums.len())
+println(f"Length: {nums.len()}")
 ```
 
 ### Map Operations
@@ -434,14 +544,14 @@ println("Length: " + nums.len())
 let scores = {"alice": 95, "bob": 87}
 
 println(scores["alice"])
-println("Keys: " + scores.keys())
-println("Values: " + scores.values())
-println("Entries: " + scores.entries())
-println("Has 'alice': " + scores.has("alice"))
+println(f"Keys: {scores.keys()}")
+println(f"Values: {scores.values()}")
+println(f"Entries: {scores.entries()}")
+println(f"Has 'alice': {scores.has('alice')}")
 
 scores.delete("bob")
 scores.clear()
-println("Length: " + scores.len())
+println(f"Length: {scores.len()}")
 ```
 
 ### String Methods
@@ -471,7 +581,7 @@ print("no newline")
 println("with newline")
 
 let name = input("Enter your name: ")
-println("Hello, " + name)
+println(f"Hello, {name}")
 ```
 
 ### Type Functions
@@ -547,19 +657,82 @@ assert(2 + 2 == 4, "Math still works")
 
 ## Error Handling
 
+### try / catch / finally
 ```haiku
 try {
     let x = 10
     let y = 0
     if y == 0 {
-        throw("Cannot divide by zero!")
+        throw "Cannot divide by zero!"
     }
-    println("Result: " + (x / y))
+    println(f"Result: {x / y}")
 } catch e {
-    println("Caught error: " + e)
+    println(f"Caught error: {e}")
 } finally {
     println("Cleanup complete")
 }
+```
+
+### throw
+Use `throw` to raise an error from anywhere:
+```haiku
+fn divide(a, b) {
+    if b == 0 {
+        throw "Division by zero"
+    }
+    return a / b
+}
+```
+
+### Error Tracebacks
+When an unhandled error occurs, Haiku prints a full **call-stack traceback** with the exact line number where the error happened and every function call that led to it.
+
+Example program (`bad_math.hku`):
+```haiku
+fn divide(a, b) {
+    return a / b        // line 2 — error happens here
+}
+
+fn calc(x) {
+    return divide(x, 0) // line 6
+}
+
+fn main() {
+    let v = calc(10)    // line 10
+}
+
+main()                  // line 13
+```
+
+Output:
+```
+Traceback (most recent call last):
+  at line 13 in fn 'main'
+  at line 10 in fn 'calc'
+  at line 6 in fn 'divide'
+RuntimeError at line 2: Division by zero
+```
+
+The traceback reads **bottom-up** — the last line is where the error actually occurred, and the frames above it show the call chain that got there.
+
+### Catching the error message
+The `catch` variable receives the error message string:
+```haiku
+try {
+    let result = 1 / 0
+} catch err {
+    println(f"Handled: {err}")   // Handled: Division by zero
+}
+```
+
+### Unclosed Block Comments
+If a `/* ... */` block comment is never closed, Haiku raises a clear error instead of silently swallowing the rest of the file:
+```haiku
+/* this comment is never closed
+println("this line is NOT skipped — you get an error instead")
+```
+```
+LexerError: Unterminated block comment starting at line 1
 ```
 
 ---
@@ -569,21 +742,37 @@ try {
 ### Run a File
 ```bash
 python main.py script.hku
+# or
+python -m haiku script.hku
 ```
 
 ### Interactive REPL
 ```bash
 python main.py
+# or
+python -m haiku
 ```
 
 ### Run Inline Code
 ```bash
 python main.py -c "println(42)"
+# or
+python -m haiku -c "println(42)"
+```
+
+### Package Mode (`python -m haiku`)
+Because the `haiku/` directory contains a `__main__.py`, the entire package can be invoked directly with `-m`. This is handy when Haiku is installed as a library or when `main.py` is not in your working directory.
+
+```bash
+# From any directory where haiku/ is importable:
+python -m haiku script.hku
+python -m haiku --version
+python -m haiku --help
 ```
 
 ### From Python
 ```python
-from Haiku import run
+from haiku import run
 
 result = run('''
 let x = 10
@@ -591,9 +780,9 @@ let y = 20
 println(x + y)
 ''')
 
-print(result.output)
+print(result.output)   # 30
 if result.error:
-    print("Error:", result.error)
+    print(result.error)  # formatted traceback if something went wrong
 ```
 
 ---
@@ -601,26 +790,30 @@ if result.error:
 ## Project Structure
 
 ```
-Haiku/
-├── __init__.py       # Package entry point, run() helper
-├── main.py           # CLI with REPL and file execution
-├── lexer.py          # Tokenizer
-├── parser.py         # Recursive-descent parser
-├── ast_nodes.py      # AST node definitions
-├── interpreter.py    # Tree-walking interpreter
-├── values.py         # Runtime value types
-├── stdlib.py         # Built-in functions and modules
-├── README.md         # This documentation
-└── examples/
-    ├── hello.hku
-    ├── variables.hku
-    ├── functions.hku
-    ├── collections.hku
-    ├── control_flow.hku
-    ├── classes.hku
-    ├── math.hku
-    ├── json_file.hku
-    └── advanced.hku
+Haiku-main/
+├── main.py               # Root entry point  →  python main.py
+├── icon.ico
+├── README.md
+├── examples/
+│   ├── hello.hku
+│   ├── variables.hku
+│   ├── functions.hku
+│   ├── collections.hku
+│   ├── control_flow.hku
+│   ├── classes.hku
+│   ├── math.hku
+│   ├── json_file.hku
+│   └── advanced.hku
+└── haiku/                # The language package
+    ├── __init__.py       # Public API + run() helper
+    ├── __main__.py       # Package entry point  →  python -m haiku
+    ├── cli.py            # CLI logic (shared by main.py & __main__.py)
+    ├── lexer.py          # Tokenizer
+    ├── parser.py         # Recursive-descent parser
+    ├── ast_nodes.py      # AST node definitions (all nodes carry line numbers)
+    ├── interpreter.py    # Tree-walking interpreter + traceback engine
+    ├── values.py         # Runtime value types
+    └── stdlib.py         # Built-in functions and modules
 ```
 
 ---
@@ -652,7 +845,7 @@ fn fibonacci(n) {
 }
 
 for i in range(0, 10) {
-    println("fib(" + i + ") = " + fibonacci(i))
+    println(f"fib({i}) = {fibonacci(i)}")
 }
 ```
 
@@ -665,13 +858,13 @@ let users = [
 ]
 
 let adults = users.filter((u) => u["age"] >= 30)
-println("Adults: " + adults)
+println(f"Adults: {adults}")
 
 let names = users.map((u) => u["name"])
-println("Names: " + names)
+println(f"Names: {names}")
 
 let totalAge = users.reduce((acc, u) => acc + u["age"], 0)
-println("Average age: " + (totalAge / users.len()))
+println(f"Average age: {totalAge / users.len()}")
 ```
 
 ---
@@ -680,6 +873,9 @@ println("Average age: " + (totalAge / users.len()))
 
 | Feature | Status | Notes |
 |---------|--------|-------|
+| F-Strings | Complete | Easy string interpolation with f"text {expr}" |
+| R-Strings | Complete | Raw strings for regex/paths with r"text" |
+| Module Imports | Complete | Import .hku files and built-in modules |
 | Lexical Analysis | Complete | Keywords, identifiers, literals, comments, operators |
 | Primitive Types | Complete | Number, String, Boolean, None |
 | Collections | Complete | List, Map with rich native methods |
@@ -689,6 +885,9 @@ println("Average age: " + (totalAge / users.len()))
 | Functions | Complete | Named, anonymous, lambda, default params, variadic, closures, higher-order |
 | OOP | Complete | Classes, inheritance, super, static methods, encapsulation |
 | Error Handling | Complete | try/catch/finally, throw |
+| Error Tracebacks | Complete | Full call-stack with exact line numbers on every runtime error |
+| Unclosed Comment Detection | Complete | `/* */` that is never closed raises LexerError with line number |
+| Package Mode | Complete | `python -m haiku` works alongside `python main.py` via `haiku/__main__.py` |
 | Standard Library | Complete | I/O, Math, Time, JSON, File, type utilities |
 | String Processing | Complete | Methods: upper, lower, trim, split, contains, replace, slice |
 | List Processing | Complete | Methods: push, pop, shift, map, filter, reduce, sort, find |
@@ -702,7 +901,7 @@ println("Average age: " + (totalAge / users.len()))
 ### 1. Compile to Executable (`PyInstaller`)
 To bundle the application into exe:
 ```powershell
-pyinstaller --onefile --paths . --icon icon.ico main.py -n haiku
+pyinstaller --onefile --icon icon.ico --name haiku main.py
 ```
 
 ## License

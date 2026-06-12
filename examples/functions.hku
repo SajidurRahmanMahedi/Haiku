@@ -1,7 +1,7 @@
 // Functions in Haiku
 
 fn greet(name) {
-    return "Hello, " + name + "!"
+    return f"Hello, {name}!"
 }
 
 fn add(a, b) {
@@ -17,7 +17,7 @@ fn factorial(n) {
 
 // Default parameters
 fn greetWithTitle(name, title = "Mr./Ms.") {
-    return "Hello, " + title + " " + name
+    return f"Hello, {title} {name}"
 }
 
 // Lambda functions
@@ -25,9 +25,9 @@ let multiply = (a, b) => a * b
 let square = (x) => x * x
 
 println(greet("Haiku"))
-println("5 + 3 = " + add(5, 3))
-println("5! = " + factorial(5))
+println(f"5 + 3 = {add(5, 3)}")
+println(f"5! = {factorial(5)}")
 println(greetWithTitle("Smith"))
 println(greetWithTitle("Doe", "Dr."))
-println("4 * 7 = " + multiply(4, 7))
-println("5^2 = " + square(5))
+println(f"4 * 7 = {multiply(4, 7)}")
+println(f"5^2 = {square(5)}")

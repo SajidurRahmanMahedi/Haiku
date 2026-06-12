@@ -16,7 +16,7 @@ if score >= 90 {
 // For loops
 println("Counting to 5:")
 for i in range(1, 6) {
-    println("  " + i)
+    println(f"  {i}")
 }
 
 // While loops
@@ -26,7 +26,7 @@ while n > 1 {
     fact = fact * n
     n = n - 1
 }
-println("5! = " + fact)
+println(f"5! = {fact}")
 
 // Match statement
 let day = "monday"
@@ -41,4 +41,4 @@ match day {
 // Ternary
 let age = 20
 let status = age >= 18 ? "adult" : "minor"
-println("Status: " + status)
+println(f"Status: {status}")

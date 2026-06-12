@@ -7,7 +7,7 @@ let data = {
     "active": true
 }
 
-println("Data map: " + data)
+println(f"Data map: {data}")
 
 // Convert to JSON string
 let jsonStr = JSON.stringify(data)
@@ -16,20 +16,20 @@ println(jsonStr)
 
 // Parse JSON back
 let parsed = JSON.parse(jsonStr)
-println("Parsed name: " + parsed["name"])
-println("Parsed features: " + parsed["features"])
+println(f"Parsed name: {parsed['name']}")
+println(f"Parsed features: {parsed['features']}")
 
 // File operations (simulated)
 File.write("hello.txt", "Hello from Haiku!")
 println("File written")
 
 let content = File.read("hello.txt")
-println("File content: " + content)
+println(f"File content: {content}")
 
-println("File exists: " + File.exists("hello.txt"))
+println(f"File exists: {File.exists('hello.txt')}")
 
 File.append("hello.txt", "\nAppended line.")
-println("After append: " + File.read("hello.txt"))
+println(f"After append: {File.read('hello.txt')}")
 
 File.delete("hello.txt")
-println("File exists after delete: " + File.exists("hello.txt"))
+println(f"File exists after delete: {File.exists('hello.txt')}")

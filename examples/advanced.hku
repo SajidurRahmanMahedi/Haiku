@@ -6,7 +6,7 @@ fn applyTwice(func, x) {
 }
 
 let addTen = (x) => x + 10
-println("applyTwice(addTen, 5) = " + applyTwice(addTen, 5))
+println(f"applyTwice(addTen, 5) = {applyTwice(addTen, 5)}")
 
 // Closure
 fn makeCounter() {
@@ -18,9 +18,9 @@ fn makeCounter() {
 }
 
 let counter = makeCounter()
-println("Counter: " + counter())
-println("Counter: " + counter())
-println("Counter: " + counter())
+println(f"Counter: {counter()}")
+println(f"Counter: {counter()}")
+println(f"Counter: {counter()}")
 
 // Error handling
 try {
@@ -29,21 +29,21 @@ try {
     if y == 0 {
         throw("Cannot divide by zero!")
     }
-    println("Result: " + (x / y))
+    println(f"Result: {x / y}")
 } catch e {
-    println("Caught error: " + e)
+    println(f"Caught error: {e}")
 } finally {
     println("Cleanup complete")
 }
 
 // Range operator
 let r = 1..5
-println("Range 1..5: " + r)
+println(f"Range 1..5: {r}")
 
 // List comprehension-like with map/filter
 let nums = range(1, 11)
 let squares = nums.map((x) => x * x).filter((x) => x > 10)
-println("Squares > 10: " + squares)
+println(f"Squares > 10: {squares}")
 
 // Assertions
 assert(2 + 2 == 4, "Math still works")

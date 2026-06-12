@@ -6,11 +6,11 @@ class Animal {
     }
 
     fn speak() {
-        return this.name + " makes a sound"
+        return f"{this.name} makes a sound"
     }
 
     fn info() {
-        return "Animal: " + this.name
+        return f"Animal: {this.name}"
     }
 }
 
@@ -21,11 +21,11 @@ class Dog(Animal) {
     }
 
     fn speak() {
-        return this.name + " barks!"
+        return f"{this.name} barks!"
     }
 
     fn info() {
-        return super.info() + " (" + this.breed + ")"
+        return f"{super.info()} ({this.breed})"
     }
 }
 
@@ -36,4 +36,4 @@ println(animal.info())
 let dog = Dog("Buddy", "Golden Retriever")
 println(dog.speak())
 println(dog.info())
-println("Breed: " + dog.breed)
+println(f"Breed: {dog.breed}")

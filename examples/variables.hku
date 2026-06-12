@@ -6,16 +6,17 @@ let price = 19.99
 let active = true
 let empty = none
 
-println("String: " + message)
-println("Integer: " + count)
-println("Float: " + price)
-println("Boolean: " + active)
-println("None: " + empty)
+// Using f-strings for cleaner output
+println(f"String: {message}")
+println(f"Integer: {count}")
+println(f"Float: {price}")
+println(f"Boolean: {active}")
+println(f"None: {empty}")
 
 // Type checking
-println("Type of count: " + type(count))
-println("Type of message: " + type(message))
+println(f"Type of count: {type(count)}")
+println(f"Type of message: {type(message)}")
 
 // Constants
 const PI = 3.14159
-println("PI = " + PI)
+println(f"PI = {PI}")

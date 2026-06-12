@@ -18,12 +18,14 @@ from typing import List, Optional, Union
 class Literal:
     """Numeric, string, boolean, or none literal."""
     value: Union[int, float, str, bool, None]
+    line: int = 0
 
 
 @dataclass
 class Identifier:
     """Variable or function name."""
     name: str
+    line: int = 0
 
 
 @dataclass
@@ -32,6 +34,7 @@ class BinaryExpr:
     left: "Expr"
     operator: str
     right: "Expr"
+    line: int = 0
 
 
 @dataclass
@@ -39,6 +42,7 @@ class UnaryExpr:
     """Unary operation: op operand"""
     operator: str
     operand: "Expr"
+    line: int = 0
 
 
 @dataclass
@@ -47,6 +51,7 @@ class AssignExpr:
     target: "Expr"
     operator: str
     value: "Expr"
+    line: int = 0
 
 
 @dataclass
@@ -54,6 +59,7 @@ class CallExpr:
     """Function or method call."""
     callee: "Expr"
     args: List["Expr"]
+    line: int = 0
 
 
 @dataclass
@@ -62,6 +68,7 @@ class MemberExpr:
     obj: "Expr"
     property: str
     optional: bool = False
+    line: int = 0
 
 
 @dataclass
@@ -69,12 +76,14 @@ class IndexExpr:
     """Index access: obj[index]"""
     obj: "Expr"
     index: "Expr"
+    line: int = 0
 
 
 @dataclass
 class ListExpr:
     """List literal: [1, 2, 3]"""
     elements: List["Expr"]
+    line: int = 0
 
 
 @dataclass
@@ -88,6 +97,7 @@ class MapEntry:
 class MapExpr:
     """Map literal: {"a": 1, "b": 2}"""
     entries: List[MapEntry]
+    line: int = 0
 
 
 @dataclass
@@ -95,6 +105,7 @@ class LambdaExpr:
     """Anonymous function / lambda: (x) => x * 2  or fn(x) { ... }"""
     params: List["Param"]
     body: Union["Expr", List["Stmt"]]
+    line: int = 0
 
 
 @dataclass
@@ -103,24 +114,33 @@ class TernaryExpr:
     condition: "Expr"
     consequent: "Expr"
     alternate: "Expr"
+    line: int = 0
 
 
 @dataclass
 class ThisExpr:
     """Reference to current object instance."""
-    pass
+    line: int = 0
 
 
 @dataclass
 class SuperExpr:
     """Reference to superclass method: super.method()"""
     method: str
+    line: int = 0
+
+
+@dataclass
+class FString:
+    """F-string with interpolation: f'Hello {name}'"""
+    parts: List[Union[str, "Expr"]]  # Alternating string literals and expressions
+    line: int = 0
 
 
 Expr = Union[
     Literal, Identifier, BinaryExpr, UnaryExpr, AssignExpr,
     CallExpr, MemberExpr, IndexExpr, ListExpr, MapExpr,
-    LambdaExpr, TernaryExpr, ThisExpr, SuperExpr
+    LambdaExpr, TernaryExpr, ThisExpr, SuperExpr, FString
 ]
 
 
@@ -141,6 +161,7 @@ class VarDecl:
     kind: str          # "let" or "const"
     name: str
     init: Optional[Expr]
+    line: int = 0
 
 
 @dataclass
@@ -150,6 +171,7 @@ class FnDecl:
     params: List[Param]
     body: List["Stmt"]
     is_static: bool = False
+    line: int = 0
 
 
 @dataclass
@@ -158,6 +180,7 @@ class ClassDecl:
     name: str
     superclass: Optional[Identifier]
     methods: List[FnDecl]
+    line: int = 0
 
 
 @dataclass
@@ -166,6 +189,7 @@ class IfStmt:
     condition: Expr
     consequent: "Stmt"
     alternate: Optional["Stmt"] = None
+    line: int = 0
 
 
 @dataclass
@@ -174,6 +198,7 @@ class ForStmt:
     variable: str
     iterable: Expr
     body: "Stmt"
+    line: int = 0
 
 
 @dataclass
@@ -181,6 +206,7 @@ class WhileStmt:
     """While loop: while condition { body }"""
     condition: Expr
     body: "Stmt"
+    line: int = 0
 
 
 @dataclass
@@ -196,6 +222,7 @@ class MatchStmt:
     expr: Expr
     cases: List[MatchCase]
     default: Optional["Stmt"] = None
+    line: int = 0
 
 
 @dataclass
@@ -205,42 +232,47 @@ class TryStmt:
     catch_param: Optional[str] = None
     catch_body: Optional[List["Stmt"]] = None
     finally_body: Optional[List["Stmt"]] = None
+    line: int = 0
 
 
 @dataclass
 class ThrowStmt:
     """Throw an exception."""
     expr: Expr
+    line: int = 0
 
 
 @dataclass
 class ReturnStmt:
     """Return from a function."""
     expr: Optional[Expr] = None
+    line: int = 0
 
 
 @dataclass
 class BreakStmt:
     """Break out of a loop."""
-    pass
+    line: int = 0
 
 
 @dataclass
 class ContinueStmt:
     """Skip to next loop iteration."""
-    pass
+    line: int = 0
 
 
 @dataclass
 class Block:
     """Block of statements: { stmt; stmt; }"""
     body: List["Stmt"]
+    line: int = 0
 
 
 @dataclass
 class ExprStmt:
     """Expression used as a statement."""
     expr: Expr
+    line: int = 0
 
 
 @dataclass
@@ -249,6 +281,7 @@ class ImportStmt:
     names: List[str]
     alias: Optional[str] = None
     path: Optional[str] = None
+    line: int = 0
 
 
 Stmt = Union[
