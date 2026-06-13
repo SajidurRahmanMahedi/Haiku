@@ -108,8 +108,13 @@ def _run_source(source: str) -> dict:
         globals_env = create_global_env(interpreter)
         interpreter.globals = globals_env
         interpreter.environment = globals_env
+        # Set up input provider for non-interactive execution
+        interpreter.set_input_provider(lambda: input())
+        # Override write methods to print immediately instead of buffering
+        interpreter.write = lambda text: print(text, end="", flush=True)
+        interpreter.writeln = lambda text: print(text, end="\n", flush=True)
         interpreter.interpret(ast)
-        return {"output": interpreter.get_output(), "error": None}
+        return {"output": "", "error": None}
     except LexerError as e:
         return {"output": "", "error": f"LexerError: {e}"}
     except ParseError as e:

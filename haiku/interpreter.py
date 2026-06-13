@@ -499,10 +499,84 @@ class Interpreter:
         raise HaikuRuntimeError(f"Unknown unary operator {expr.operator}", line)
 
     def _eval_assign(self, expr: AssignExpr) -> HValue:
-        value = self._eval_expr(expr.value)
         target = expr.target
         line = expr.line
+        operator = expr.operator
 
+        # Handle compound assignment operators (+=, -=, *=, /=, %=, etc.)
+        if operator and operator != "=":
+            # Get current value
+            if isinstance(target, Identifier):
+                current = self.environment.get(target.name)
+            elif isinstance(target, MemberExpr):
+                obj = self._eval_expr(target.obj)
+                if isinstance(obj, HInstance):
+                    current = obj.fields.get(target.property, h_none())
+                elif isinstance(obj, HMap):
+                    current = obj.entries.get(target.property, h_none())
+                else:
+                    raise HaikuRuntimeError(f"Cannot set property on {obj.type}", line)
+            elif isinstance(target, IndexExpr):
+                obj = self._eval_expr(target.obj)
+                index = self._eval_expr(target.index)
+                if isinstance(obj, HList) and isinstance(index, HNumber):
+                    idx = int(index.value)
+                    if idx < 0 or idx >= len(obj.elements):
+                        raise HaikuRuntimeError("Index out of bounds", line)
+                    current = obj.elements[idx]
+                elif isinstance(obj, HMap) and isinstance(index, HString):
+                    current = obj.entries.get(index.value, h_none())
+                else:
+                    raise HaikuRuntimeError(f"Cannot index-assign {obj.type}", line)
+            else:
+                raise HaikuRuntimeError(f"Invalid assignment target", line)
+
+            # Evaluate the right-hand side
+            rhs = self._eval_expr(expr.value)
+
+            # Apply the compound operator
+            if operator == "+=":
+                if isinstance(current, HNumber) and isinstance(rhs, HNumber):
+                    value = h_number(current.value + rhs.value)
+                elif isinstance(current, HString) or isinstance(rhs, HString):
+                    value = h_string(str(current) + str(rhs))
+                elif isinstance(current, HList) and isinstance(rhs, HList):
+                    value = h_list(current.elements + rhs.elements)
+                else:
+                    raise HaikuRuntimeError(f"Cannot += {current.type} and {rhs.type}", line)
+            elif operator == "-=":
+                if isinstance(current, HNumber) and isinstance(rhs, HNumber):
+                    value = h_number(current.value - rhs.value)
+                else:
+                    raise HaikuRuntimeError(f"Cannot -= {current.type} and {rhs.type}", line)
+            elif operator == "*=":
+                if isinstance(current, HNumber) and isinstance(rhs, HNumber):
+                    value = h_number(current.value * rhs.value)
+                elif isinstance(current, HString) and isinstance(rhs, HNumber):
+                    value = h_string(current.value * int(rhs.value))
+                elif isinstance(current, HNumber) and isinstance(rhs, HString):
+                    value = h_string(rhs.value * int(current.value))
+                else:
+                    raise HaikuRuntimeError(f"Cannot *= {current.type} and {rhs.type}", line)
+            elif operator == "/=":
+                if isinstance(current, HNumber) and isinstance(rhs, HNumber):
+                    if rhs.value == 0:
+                        raise HaikuRuntimeError("Division by zero", line)
+                    value = h_number(current.value / rhs.value)
+                else:
+                    raise HaikuRuntimeError(f"Cannot /= {current.type} and {rhs.type}", line)
+            elif operator == "%=":
+                if isinstance(current, HNumber) and isinstance(rhs, HNumber):
+                    value = h_number(current.value % rhs.value)
+                else:
+                    raise HaikuRuntimeError(f"Cannot %= {current.type} and {rhs.type}", line)
+            else:
+                raise HaikuRuntimeError(f"Unknown operator {operator}", line)
+        else:
+            # Simple assignment
+            value = self._eval_expr(expr.value)
+
+        # Assign the computed value
         if isinstance(target, Identifier):
             try:
                 self.environment.set(target.name, value)
