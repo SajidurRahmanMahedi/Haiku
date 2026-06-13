@@ -45,7 +45,7 @@ def run_repl():
     """Start an interactive Read-Eval-Print Loop."""
     print("=" * 50)
     print(f"  Haiku Programming Language v{ver}")
-    print("  Type 'exit' or press Ctrl+D to quit")
+    print("  Type 'exit' or press Ctrl+C to quit")
     print("=" * 50)
 
     interpreter = Interpreter()
@@ -60,7 +60,7 @@ def run_repl():
             print("\nGoodbye!")
             break
 
-        stripped = line.strip()
+        stripped = line.rstrip()
         if not stripped:
             continue
         if stripped == "exit":
@@ -76,7 +76,12 @@ def run_repl():
             interpreter.interpret(ast)
             output = interpreter.get_output()
             if output:
+                # Strip trailing whitespace but preserve newlines
+                output = output.rstrip()
                 print(output, end="")
+                # Add newline if output doesn't end with one
+                if not output.endswith("\n"):
+                    print()
         except LexerError as e:
             print(f"LexerError: {e}")
         except ParseError as e:
